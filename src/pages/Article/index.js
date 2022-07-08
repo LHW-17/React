@@ -7,6 +7,7 @@ import {
   Radio,
   DatePicker,
   Select,
+  Popconfirm,
 } from "antd";
 import "moment/locale/zh-cn";
 import locale from "antd/es/date-picker/locale/zh_CN";
@@ -16,6 +17,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import img404 from "@/assets/error.png";
 import { useEffect, useState } from "react";
 import { http } from "@/utils";
+import { history } from "@/utils/history";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -81,6 +83,14 @@ const Article = () => {
       page,
     });
   };
+  const delArticle = async (data) => {
+    await http.delete(`/mp/articles/${data.id}`);
+    // 更新列表
+    setParams({
+      page: 1,
+      per_page: 10,
+    });
+  };
   const columns = [
     {
       title: "封面",
@@ -120,19 +130,16 @@ const Article = () => {
     },
     {
       title: "操作",
-      render: (data) => {
-        return (
-          <Space size="middle">
-            <Button type="primary" shape="circle" icon={<EditOutlined />} />
-            <Button
-              type="primary"
-              danger
-              shape="circle"
-              icon={<DeleteOutlined />}
-            />
-          </Space>
-        );
-      },
+      render: (data) => (
+        <Space size="middle">
+          <Button
+            type="primary"
+            shape="circle"
+            icon={<EditOutlined />}
+            onClick={() => history.push(`/home/publish?id=${data.id}`)}
+          />
+        </Space>
+      ),
     },
   ];
 
