@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
   Breadcrumb,
@@ -17,7 +17,6 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import img404 from "@/assets/error.png";
 import { useEffect, useState } from "react";
 import { http } from "@/utils";
-import { history } from "@/utils/history";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -91,6 +90,12 @@ const Article = () => {
       per_page: 10,
     });
   };
+
+  // 编辑文章
+  const navigate = useNavigate();
+  const goPublish = (data) => {
+    navigate(`/publish?id=${data.id}`);
+  };
   const columns = [
     {
       title: "封面",
@@ -137,7 +142,7 @@ const Article = () => {
               type="primary"
               shape="circle"
               icon={<EditOutlined />}
-              onClick={() => history.push(`/home/publish?id=${data.id}`)}
+              onClick={() => goPublish(data)}
             />
             <Popconfirm
               title="确认删除该条文章吗?"
