@@ -130,16 +130,31 @@ const Article = () => {
     },
     {
       title: "操作",
-      render: (data) => (
-        <Space size="middle">
-          <Button
-            type="primary"
-            shape="circle"
-            icon={<EditOutlined />}
-            onClick={() => history.push(`/home/publish?id=${data.id}`)}
-          />
-        </Space>
-      ),
+      render: (data) => {
+        return (
+          <Space size="middle">
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<EditOutlined />}
+              onClick={() => history.push(`/home/publish?id=${data.id}`)}
+            />
+            <Popconfirm
+              title="确认删除该条文章吗?"
+              onConfirm={() => delArticle(data)}
+              okText="确认"
+              cancelText="取消"
+            >
+              <Button
+                type="primary"
+                danger
+                shape="circle"
+                icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
+          </Space>
+        );
+      },
     },
   ];
 
@@ -156,10 +171,10 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form onFinish={onFinish} initialValues={{ status: -1 }}>
+        <Form onFinish={onFinish} initialValues={{ status: null }}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
-              <Radio value={-1}>全部</Radio>
+              <Radio value={null}>全部</Radio>
               <Radio value={0}>草稿</Radio>
               <Radio value={1}>待审核</Radio>
               <Radio value={2}>审核通过</Radio>

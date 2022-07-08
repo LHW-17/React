@@ -14,12 +14,13 @@ const { Header, Sider } = Layout;
 
 const GeekLayout = () => {
   const { pathname } = useLocation();
-  const { userStore, loginStore } = useStore();
+  const { userStore, loginStore, channelStore } = useStore();
   const navigate = useNavigate();
   //仅加载时调用一次
   useEffect(() => {
     userStore.getUserInfo();
-  }, [userStore]);
+    channelStore.loadChannelList();
+  }, [userStore, channelStore]);
   const onConfirm = () => {
     loginStore.loginOut();
     navigate("/login");
@@ -48,6 +49,7 @@ const GeekLayout = () => {
             mode="inline"
             theme="dark"
             defaultSelectedKeys={[pathname]}
+            selectedKeys={pathname}
             style={{ height: "100%", borderRight: 0 }}
           >
             <Menu.Item icon={<HomeOutlined />} key="/">
